@@ -105,3 +105,31 @@ python main.py
 - 演示视频：`media/基于RK3588的边缘ai抑郁风险预警系统演示视频.mp4`
 
 其中演示视频已通过 Git LFS 管理，首次克隆仓库时请确保本地安装并启用 Git LFS。
+
+## GitHub 打开说明
+
+GitHub 仓库页对较大的 `docx` 和 `mp4` 文件通常不会直接在线预览，页面里出现
+“Sorry about that, but we can't show files that are this big right now.”
+属于正常现象，并不代表文件上传失败或损坏。
+
+### 设计报告怎么打开
+
+1. 进入 `docs/` 目录中的报告文件页面
+2. 点击 `View raw` 或右上角下载按钮
+3. 浏览器会下载 `docx` 文件
+4. 下载完成后使用 Microsoft Word 或 WPS Office 打开
+
+### 演示视频怎么打开
+
+1. 进入 `media/` 目录中的视频文件页面
+2. 点击 `Raw` 或右上角下载按钮
+3. 等待视频完整下载到本地
+4. 使用本地播放器打开，例如系统自带播放器、PotPlayer、VLC 等
+
+### 为什么视频不能在 GitHub 页面直接播放
+
+- 本仓库中的视频文件较大
+- 视频通过 Git LFS 存储
+- GitHub 对这类大文件通常只提供下载，不提供网页内嵌播放
+
+因此，正确使用方式是“下载后本地打开”，而不是在仓库网页里直接预览。
