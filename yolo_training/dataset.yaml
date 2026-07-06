@@ -1,0 +1,31 @@
+# YOLOv8 训练配置文件 — MindRoom Guard 视觉模型
+# 生成日期: 2026-06-01
+# 总样本: 10,000 帧 (100 用户 × 100 帧)
+
+# 数据集根路径 (使用绝对路径或相对路径)
+path: D:/G/q/Anti_depression/data
+
+# 训练/验证/测试图像目录 (需自行准备对应帧图像)
+train: images/train
+val: images/val
+test: images/test
+
+# 类别数
+nc: 8
+
+# 类别名称 (与 vision_training_10k.csv 的 behavior_class_id 对齐)
+names:
+  0: normal_face
+  1: sad_expression
+  2: eye_fatigue
+  3: head_down_posture
+  4: forward_head_posture
+  5: prolonged_eye_closure
+  6: anxiety_expression
+  7: flat_affect
+
+# YOLOv8 模型推荐配置
+# 从零训练:
+#   yolo detect train data=dataset.yaml model=yolov8n.pt epochs=100 imgsz=640
+# 从预训练微调:
+#   yolo detect train data=dataset.yaml model=yolov8n-pose.pt epochs=50 imgsz=640

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindRoom Guard 远程监护台</title>
+    <style>
+        body { font-family: 'Microsoft YaHei', sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; }
+        h1 { color: #2c3e50; font-size: 24px; }
+        .badge { display: inline-block; background: #27ae60; color: white; padding: 5px 10px; border-radius: 15px; font-size: 14px; margin-bottom: 20px; }
+        #status { font-weight: bold; margin: 10px 0; padding: 10px; border-radius: 5px; }
+        /* 图片展示区 */
+        #chart-img { max-width: 100%; height: auto; display: none; margin: 10px auto; border: 1px solid #ecf0f1; border-radius: 8px; padding: 10px; background: #fff;}
+        p { color: #7f8c8d; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛡️ MindRoom Guard 远程监护面板</h1>
+        <p><span class="badge">原生硬渲染 | 0外部依赖 | 局域网加密通信</span></p>
+        
+        <div id="status" style="background-color: #fdebd0; color: #e67e22;">
+            ⏳ 正在请求边缘设备渲染最新风险图表...
+        </div>
+        
+        <img id="chart-img" alt="实时风险趋势图" />
+    </div>
+
+    <script>
+        window.onload = function() {
+            var statusDiv = document.getElementById('status');
+            var imgEl = document.getElementById('chart-img');
+
+            function fetchImage() {
+                fetch('/api/data')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === "success") {
+                            statusDiv.innerHTML = "✅ 【纯内网通信】边缘端渲染完成，数据已同步！";
+                            statusDiv.style.backgroundColor = "#d5f5e3";
+                            statusDiv.style.color = "#27ae60";
+                            
+                            // 直接将 base64 图片赋给 img 标签
+                            imgEl.src = "data:image/png;base64," + data.image;
+                            imgEl.style.display = "block";
+                        } else if (data.status === "empty") {
+                            statusDiv.innerHTML = "⚠️ 内部连接正常，但设备暂未生成加密数据，请确保主程序已记录数据。";
+                            statusDiv.style.backgroundColor = "#fcf3cf";
+                            statusDiv.style.color = "#f39c12";
+                            imgEl.style.display = "none";
+                        } else {
+                            throw new Error(data.message);
+                        }
+                    })
+                    .catch(error => {
+                        statusDiv.innerHTML = "❌ 请求边缘端数据失败，请检查主程序是否在运行。";
+                        statusDiv.style.backgroundColor = "#fadbd8";
+                        statusDiv.style.color = "#c0392b";
+                        imgEl.style.display = "none";
+                    });
+            }
+
+            fetchImage();
+            // 每 3 秒刷新一次图片
+            setInterval(fetchImage, 3000);
+        };
+    </script>
+</body>
+</html>
